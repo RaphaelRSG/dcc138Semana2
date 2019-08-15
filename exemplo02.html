@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Exemplo02</title>
+</head>
+<body style="background-color:crimson">
+
+    <h1 style="color:gold" font-style="">Caesar: A Lonely Youth</h1>
+    <canvas width="600" height="300"> *CAIU A CRUZ DE PEDRA NELE FOI ESTRANHO ELE MORREU* </canvas>
+    <script>
+        var canvas = document.querySelector("canvas");
+        canvas.width = 600;
+        canvas.height = 600;
+        var ctx = canvas.getContext("2d");
+
+        preencheRetangulo(0,0, canvas.width, canvas.height, "tomato");
+
+        //contornarRetangulo(98,53,500,53,3 "yellow");
+        
+        escreveTexto("CAESAAAAAAAAAR", 100, 100, "blue");
+
+        function preencheRetangulo(x,y,w,h,cor)
+        {
+            ctx.fillStyle=cor;
+            ctx.fillRect(x,y,w,h);
+        }
+        function contornarRetangulo(x,y,w,h,cor,lw)
+        {
+            ctx.lineWidth = lw;
+            ctx.strokeStyle=cor;
+            ctx.strokeRect(x,y,w,h);
+        }
+        function escreveTexto(texto,x,y, cor)
+        {
+            ctx.font= "bold 50px Arial";
+            ctx.strokeStyle=cor;
+            ctx.fillText(texto, x, y);
+        }
+    </script>
+</body>
+</html>

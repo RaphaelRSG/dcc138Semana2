@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>semana 2 exemplo 1</title>
+</head>
+<body>
+    <h1>semana 2 exemplo 1</h1>
+    <canvas />
+    <script>
+        var canvas = document.querySelector("canvas");
+        var pcw = 30;
+        var dt=0;
+        var ant = 0;
+        var pcvx = 50;
+        canvas.width=400;
+        canvas.height=300;
+        
+        var ctx=canvas.getContext("2d");
+        
+        function teclaPressionada(e)
+        {
+            console.log(e.keyCode);
+            if (e.keyCode ==37)
+            {
+                 pcvx =-30;
+            }
+            if (e.keyCode==39)
+            {
+                pcvx =30;
+            }
+        }
+        function teclaSolta(e)
+        {
+            if (e.keyCode==37)
+            {
+                pcvx = 0;
+            }
+            if (e.keyCode==39)
+            {
+                pcvx = 0;
+            }
+        }
+
+        function desenhaChao(){
+        ctx.fillStyle= "orange";
+        ctx.fillRect (0,0, canvas.width, canvas.height);
+        }
+        function desenhaPortais()
+        {
+            ctx.fillStyle = "red"
+            ctx. fillRect(395,95,5,40);
+            ctx.fillStyle = "yellow"
+            ctx. fillRect(0,95,5,40);
+        }
+
+        function desenhaPC(x,y){
+        ctx.fillStyle = "purple";
+        ctx.fillRect (x, y, pcw, pcw);
+        ctx.strokeStyle = "blue";
+        ctx.strokeRect (x, y, pcw, pcw);
+        }
+        function passo(t)
+        {
+            dt= (t - ant)/1000;
+            desenhaChao();
+            desenhaPortais();
+            ctx.fillStyle = "white"
+            ctx.fillText(t, 10, 10);
+            ctx.fillText(dt, 10, 20);
+            pcx = pcx + pcvx*dt;
+            desenhaPC(pcx,100);
+            ant = t;
+            if (pcx >=canvas.width-pcw)
+            {
+                pcx = 0- pcw;
+            }
+            else if (pcx <=0-pcw)
+            {
+                pcx = canvas.width;
+            }
+            requestAnimationFrame(passo); 
+        }
+
+        //MAIN()
+        var pcx =100;
+        requestAnimationFrame(passo);
+        addEventListener("keyup", teclaPressionada);
+        addEventListener("keydown", teclaSolta);
+
+    </script>
+</body>
+</html>
