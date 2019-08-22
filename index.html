@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Semana 03</title>
+    <script src="./Sprite.js"></script>
+</head>
+<body>
+    <h1> SEMANA 03 - Sprite,  colisões e movimentação</h1>
+    <canvas/>
+    <script>
+        var canvas = document.querySelector ("canvas");
+        canvas.width = 550;
+        canvas.height = 550;
+        var ctx = canvas.getContext("2d");
+        var anterior = 0;
+        var dt = 0;
+        var pc = new Sprite({vx:20, vy: 9});
+        var npc = [];
+        var tiros =[];
+        var NNPC = 10;
+        var pontos = 100;
+        var teclas = {
+            espaco: 0,
+            cima: 0,
+            direita: 0,
+            esquerda: 0,
+            baixo: 0
+        }
+        
+        for(var i = 0; i< NNPC; i++){
+            npc[i] = new Sprite({vx:-30,vy:10, x:Math.random()*canvas.width, y:Math.random()*canvas.height, color: "red"});
+        }
+        function passo (t){
+            dt = (t-anterior)/600;
+            ctx.fillStyle = "orange";
+            ctx.fillRect(0, 0,canvas.width, canvas.height);
+            if (teclas.espaco && pc.atirando<=0)
+            {
+                var tiro = new Sprite ({
+                    x: pc.x,
+                    y: pc.y,
+                    vx: 200*Math.sign(pc.vx),
+                    vy:200*Math.sign(pc.vy),
+                    w: 10,
+                    color: "black"
+                }); 
+                tiros.push(tiro);
+                pc.atirando = 1;
+                tiro =null;
+            }
+            pc.controlePorTeclas({teclas: teclas});
+
+            pc.mover(dt);
+            for(var i = 0; i< tiros.length; i++){
+                tiros[i].mover(dt);
+            }
+            for(var i = 0; i< NNPC; i++){
+                npc[i].perseguir({alvo: pc});
+                npc[i].mover(dt);
+            }
+            pc.desenhar(ctx);
+            for(var i = 0; i< NNPC; i++){
+                npc[i].desenhar(ctx); 
+                if (pc.imune <=0 && pc.colisao(npc[i]))
+                {
+                /*
+                for(var i = 0; i< NNPC; i++)
+                {
+                    npc[i].x = Math.random()*canvas.width;
+                    npc[i].y = Math.random()*canvas.height;
+                } 
+                
+                pc.x = Math.random()*canvas.width;
+                pc.y = Math.random()*canvas.height; */
+                pontos--;
+                pc.imune=2;
+                }
+            }
+            for(var i = 0; i< tiros.length; i++){
+                tiros[i].desenhar(ctx); 
+            }
+            ctx.fillStyle = "blue";
+            ctx.strokeStyle = "green";
+            ctx.font = "15px bold monospaced";
+            ctx.fillText(pontos, 10 ,20);
+            ctx.strokeText(pontos, 10,20);
+            anterior = t;
+            requestAnimationFrame(passo);
+        }
+        requestAnimationFrame(passo);
+
+        //configurar controles
+        addEventListener("keydown", function (e){
+            switch (e.keyCode)
+            {
+                case 37:
+                    teclas.esquerda =1;
+                    break;
+                case 39:
+                    teclas.direita =1;
+                    break;
+                case 40:
+                    teclas.baixo =1;
+                    break;
+                case 38:
+                    teclas.cima =1;
+                    break;
+                case 32:
+                    teclas.espaco = 1;
+                    break;
+                default:
+                        break;
+            
+            }
+        });
+        addEventListener("keyup", function (e){
+            switch (e.keyCode)
+            {
+                case 37:
+                    teclas.esquerda =0;
+                    break;
+                case 39:
+                    teclas.direita =0;
+                    break;
+                case 40:
+                    teclas.baixo =0;
+                    break;
+                case 38:
+                    teclas.cima =0;
+                    break;
+                case 32:
+                    teclas.espaco = 0;
+                    break;
+                default:
+                    break;
+            
+            }
+        });
+    </script>
+</body>
+</html>
