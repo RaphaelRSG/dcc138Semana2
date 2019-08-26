@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>SEMANA 4</title>
+    <script src="Sprite.js"></script>
+    <script src="Scene.js"></script>
+</head>
+<body>
+    <canvas></canvas>
+    <script>
+        var canvas = document.querySelector("canvas");
+        canvas.width = 800;
+        canvas.height = 500;
+        var ctx = canvas.getContext("2d");
+        var teclas ={
+            esquerda: 0,
+            direita: 0,
+            baixo: 0,
+            cima: 0,
+            espaco: 0
+        }
+
+        var cena1 = new Scene({ctx: ctx, w:canvas.width, h:canvas.height});
+        var pc = new Sprite ({comportar: porTeclas(teclas)});
+
+
+        cena1.adicionar(pc); //aqui cria o persoangem que tu joga
+        cena1.adicionar(new Sprite ({x: 180, y: 180,w: 15, color:"red", comportar: persegue(pc)})); //aqui cria outros personagens
+        cena1.adicionar(new Sprite ({x: 160, y: 150,h: 25, color:"red", comportar: persegue(pc)})); //aqui cria outros personagens
+        cena1.desenhar();
+
+        function porTeclas (opcoes){
+            return function (){
+                if(opcoes.teclas.esquerda) {this.vx = -50;}
+                if(opcoes.teclas.direita) {this.vx = 50;}
+                if (!opcoes.teclas.esquerda && !opcoes.teclas.direita) {this.vx=0;}
+                if(opcoes.teclas.baixo) {this.vy = 50;}
+                if(opcoes.teclas.cima) {this.vy = -50;}
+                if (!opcoes.teclas.baixo && !opcoes.teclas.cima) {this.vy=0;}
+            }
+        }
+        function persegue (alvo){
+            return function(){
+                this.vx =20*Math.sign (alvo.x - this.x);
+                this.vy =20*Math.sign (alvo.y - this.y);
+            }
+        }
+
+        function passo(t){
+            dt = (t-anterior)/1000;
+            cena1.passo(dt);
+            anterior = t;
+            requestAnimationFrame(passo);
+        }
+
+        var dt, anterior= 0;
+        requestAnimationFrame(passo);
+
+        addEventListener("keydown", function (e){
+            switch (e.keyCode){
+                case 37:
+                    teclas.esquerda =1;
+                    break;
+                case 39:
+                    teclas.direita =1;
+                    break;
+                case 40:
+                    teclas.baixo =1;
+                    break;
+                case 38:
+                    teclas.cima =1;
+                    break;
+                case 32:
+                    teclas.espaco = 1;
+                    break;
+                default:
+                        break;
+            
+            }
+        });
+        addEventListener("keyup", function (e){
+            switch (e.keyCode){
+                case 37:
+                    teclas.esquerda =0;
+                    break;
+                case 39:
+                    teclas.direita =0;
+                    break;
+                case 40:
+                    teclas.baixo =0;
+                    break;
+                case 38:
+                    teclas.cima =0;
+                    break;
+                case 32:
+                    teclas.espaco = 0;
+                    break;
+                default:
+                    break;
+            
+            }
+        });
+    </script>
+</body>
+</html>
