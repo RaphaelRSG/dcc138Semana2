@@ -1,0 +1,27 @@
+# depslib dependency file v1.0
+1567022366 source:/ice/Grupo12/Grafo.cpp
+	"Grafo.h"
+	"No.h"
+	"Aresta.h"
+	<iostream>
+	<fstream>
+	<stack>
+	<queue>
+	<list>
+	<math.h>
+	<cstdlib>
+	<ctime>
+	<float.h>
+	<iomanip>
+
+1567024555 /ice/Grupo12/Grafo.h
+	"No.h"
+	<fstream>
+	<stack>
+	<list>
+
+1567023226 /ice/Grupo12/No.h
+	"Aresta.h"
+
+1567024949 /ice/Grupo12/Aresta.h
+
